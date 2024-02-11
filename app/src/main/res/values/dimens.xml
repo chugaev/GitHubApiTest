@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="content_start_offset">27dp</dimen>
+    <dimen name="content_end_offset">27dp</dimen>
+    <dimen name="card_corner_radius">24dp</dimen>
+    <dimen name="image_corner_radius">12dp</dimen>
+</resources>

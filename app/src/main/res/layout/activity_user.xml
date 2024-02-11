@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/custom_toolbar"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/content_start_offset"
+        android:paddingEnd="@dimen/content_end_offset">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardBackgroundColor="@color/card_view">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:cardCornerRadius="@dimen/image_corner_radius"
+                        android:layout_marginEnd="20dp"
+                        app:cardBackgroundColor="@color/card_view"
+                        app:layout_constraintTop_toTopOf="@id/name"
+                        app:layout_constraintBottom_toBottomOf="@id/location"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/name"
+                        app:layout_constraintDimensionRatio="1:1">
+
+                        <ImageView
+                            android:id="@+id/avatar"
+                            android:src="@drawable/ic_launcher_background"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:text="{NAME}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        style="@style/HeaderTextViewStyle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"/>
+                    <TextView
+                        android:id="@+id/company"
+                        android:text="{company}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        style="@style/ContentTextViewStyle"
+                        app:layout_constraintTop_toBottomOf="@id/name"
+                        app:layout_constraintStart_toStartOf="@id/name"/>
+                    <TextView
+                        android:id="@+id/email"
+                        android:text="{email}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        style="@style/ContentTextViewStyle"
+                        app:layout_constraintTop_toBottomOf="@id/company"
+                        app:layout_constraintStart_toStartOf="@id/name"/>
+                    <TextView
+                        android:id="@+id/blog"
+                        android:text="{blog}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        style="@style/ContentTextViewStyle"
+                        app:layout_constraintTop_toBottomOf="@id/email"
+                        app:layout_constraintStart_toStartOf="@id/name"/>
+                    <TextView
+                        android:id="@+id/location"
+                        android:text="{location}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ContentTextViewStyle"
+                        app:layout_constraintTop_toBottomOf="@id/blog"
+                        app:layout_constraintStart_toStartOf="@id/name"/>
+
+                    <TextView
+                        android:id="@+id/info"
+                        android:text="@string/information"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/HeaderTextViewStyle"
+                        app:layout_constraintTop_toBottomOf="@id/location"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"/>
+
+                    <TextView
+                        android:id="@+id/bio"
+                        android:text="{bio}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/info"
+                        app:layout_constraintStart_toStartOf="parent"
+                        style="@style/ContentTextViewStyle"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/followers_text_view"
+                android:text="@string/followers"
+                style="@style/HeaderTextViewStyle"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

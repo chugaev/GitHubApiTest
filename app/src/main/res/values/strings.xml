@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GitHubUsers</string>
+    <string name="followers">Подписчики</string>
+    <string name="information">Информация</string>
+    <string name="users">Пользователи</string>
+    <string name="followers_temp">%s Подписчиков</string>
+    <string name="repos_temp">%s Репозиториев</string>
+</resources>
