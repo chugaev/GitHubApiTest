@@ -63,19 +63,16 @@ class UserActivity : AppCompatActivity() {
 
     private fun setData() {
         Picasso.get().load(data.avatar).into(avatar)
-        name.text = data.name
-        configureTextView(company, data.company)
-        configureTextView(email, data.email)
-        configureTextView(blog, data.blog)
-        configureTextView(location, data.location)
-        configureTextView(bio, data.bio)
-    }
-
-    private fun configureTextView(view: TextView, data: String?) {
-        if (data != null && data != "")
-            view.text = data
-        else
-            company.visibility = View.GONE
+        if (!data.name.isNullOrEmpty())
+            name.text = data.name
+        if (!data.company.isNullOrEmpty())
+            company.text = data.company
+        if (!data.company.isNullOrEmpty())
+            email.text = data.email
+        if (!data.company.isNullOrEmpty())
+            blog.text = data.blog
+        location.text = data.location
+        bio.text = data.bio
     }
 
     private fun initToolbar() {

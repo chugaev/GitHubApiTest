@@ -31,6 +31,13 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp">
 
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.4"/>
+
                     <androidx.cardview.widget.CardView
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -53,47 +60,55 @@
 
                     <TextView
                         android:id="@+id/name"
-                        android:text="{NAME}"
+                        android:text="@string/no_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         style="@style/HeaderTextViewStyle"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"/>
+                        app:layout_constraintStart_toStartOf="@id/guideline"/>
                     <TextView
                         android:id="@+id/company"
-                        android:text="{company}"
+                        android:text="@string/no_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         style="@style/ContentTextViewStyle"
                         app:layout_constraintTop_toBottomOf="@id/name"
                         app:layout_constraintStart_toStartOf="@id/name"/>
                     <TextView
                         android:id="@+id/email"
-                        android:text="{email}"
+                        android:text="@string/no_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         style="@style/ContentTextViewStyle"
                         app:layout_constraintTop_toBottomOf="@id/company"
                         app:layout_constraintStart_toStartOf="@id/name"/>
                     <TextView
                         android:id="@+id/blog"
-                        android:text="{blog}"
+                        android:text="@string/no_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         style="@style/ContentTextViewStyle"
                         app:layout_constraintTop_toBottomOf="@id/email"
                         app:layout_constraintStart_toStartOf="@id/name"/>
                     <TextView
                         android:id="@+id/location"
-                        android:text="{location}"
+                        android:text="@string/no_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         style="@style/ContentTextViewStyle"
                         app:layout_constraintTop_toBottomOf="@id/blog"
                         app:layout_constraintStart_toStartOf="@id/name"/>
@@ -113,7 +128,6 @@
 
                     <TextView
                         android:id="@+id/bio"
-                        android:text="{bio}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/info"
