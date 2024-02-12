@@ -67,11 +67,12 @@ class UserActivity : AppCompatActivity() {
             name.text = data.name
         if (!data.company.isNullOrEmpty())
             company.text = data.company
-        if (!data.company.isNullOrEmpty())
+        if (!data.email.isNullOrEmpty())
             email.text = data.email
-        if (!data.company.isNullOrEmpty())
+        if (!data.blog.isNullOrEmpty())
             blog.text = data.blog
-        location.text = data.location
+        if (!data.location.isNullOrEmpty())
+            location.text = data.location
         bio.text = data.bio
     }
 
