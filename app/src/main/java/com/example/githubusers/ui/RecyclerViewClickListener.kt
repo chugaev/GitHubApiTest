@@ -1,7 +1,6 @@
 package com.example.githubusers.ui
 
-import com.example.githubusers.data.UserInfo
-
+import com.example.githubusers.data.UserFullInfo
 interface RecyclerViewClickListener {
-    fun onItemClick(userInfo: UserInfo)
+    fun onItemClick(userInfo: UserFullInfo)
 }

@@ -1,31 +1,58 @@
 package com.example.githubusers.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.githubusers.data.UserInfo
+import com.example.githubusers.Action
+import com.example.githubusers.NotificationAction
+import com.example.githubusers.data.UserFullInfo
 import com.example.githubusers.network.Model
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UserViewModel : ViewModelWithException() {
-    private var userListLiveData: MutableLiveData<List<UserInfo?>> = MutableLiveData()
+    private val state = MutableLiveData<NotificationAction>()
+    private val userList: ArrayList<UserFullInfo> = arrayListOf()
     private val model = Model()
 
-    fun getUserListLiveData(): LiveData<List<UserInfo?>> {
+    fun getStateLiveData(): MutableLiveData<NotificationAction> {
         loadUsers()
-        return userListLiveData
+        return state
+    }
+
+    fun getUserList(): ArrayList<UserFullInfo> {
+        return userList
     }
 
     private fun loadUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val users = model.getUsers()
-                launch(Dispatchers.Main) {
-                    userListLiveData.value = users
+                userList.clear()
+                withContext(Dispatchers.Main) {
+                    userList.addAll(users.map { user -> UserFullInfo(user, true) })
+                    state.value = NotificationAction(Action.INIT, -1)
+                }
+                for (i in 0 until userList.size) {
+                    launch(Dispatchers.IO) {
+                        try {
+                            val user = userList[i]
+                            val info = model.getDetailedUserInformation(user.login)
+                            withContext(Dispatchers.Main) {
+                                user.loading = false
+                                user.reposNumber = info.reposNumber
+                                user.followersNumber = info.followersNumber
+                                state.value = NotificationAction(Action.POSITION_CHANGED, i)
+                            }
+                        } catch (e : Exception) {
+                            withContext(Dispatchers.Main) {
+                                sendException(e)
+                            }
+                        }
+                    }
                 }
             } catch (e : Exception) {
-                launch(Dispatchers.Main) {
+                withContext(Dispatchers.Main) {
                     sendException(e)
                 }
             }

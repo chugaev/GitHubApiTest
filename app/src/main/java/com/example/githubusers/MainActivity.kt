@@ -2,10 +2,10 @@ package com.example.githubusers
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.githubusers.data.UserInfo
+import com.example.githubusers.data.UserFullInfo
 import com.example.githubusers.ui.RecyclerViewClickListener
 import com.example.githubusers.ui.UserAdapter
 import com.example.githubusers.viewmodels.UserViewModel
@@ -17,7 +17,7 @@ import retrofit2.HttpException
 
 class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
 
-    private lateinit var userViewModel: UserViewModel
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +40,16 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
     }
 
     private fun createViewModel() {
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.getUserListLiveData().observe(this) {
-            val userAdapter = UserAdapter(it, this, baseContext)
-            recycler_view.adapter = userAdapter
+        userViewModel.getStateLiveData().observe(this) {
+            when(it.action) {
+                Action.INIT -> {
+                    val userAdapter = UserAdapter(userViewModel.getUserList(), this, baseContext)
+                    recycler_view.adapter = userAdapter
+                }
+                Action.POSITION_CHANGED -> {
+                    recycler_view.adapter?.notifyItemChanged(it.changedPosition)
+                }
+            }
         }
         userViewModel.getExceptionLiveData().observe(this) {
             val ex = (it as HttpException)
@@ -55,7 +61,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
         }
     }
 
-    override fun onItemClick(userInfo: UserInfo) {
+    override fun onItemClick(userInfo: UserFullInfo) {
         val intent = UserActivity.createIntent(baseContext, userInfo)
         startActivity(intent)
     }

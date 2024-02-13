@@ -7,12 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.githubusers.data.UserInfo
+import com.example.githubusers.data.UserFullInfo
 import com.example.githubusers.ui.UserAdapter
 import com.example.githubusers.viewmodels.UserInfoViewModel
 import com.squareup.picasso.Picasso
@@ -35,7 +33,7 @@ class UserActivity : AppCompatActivity() {
     companion object {
         private const val KEY = "com.example.githubusers.userinfo"
 
-        fun createIntent(context: Context, data: UserInfo): Intent {
+        fun createIntent(context: Context, data: UserFullInfo): Intent {
             val intent = Intent(context, UserActivity::class.java)
             intent.putExtra(KEY, data)
             return intent
@@ -43,7 +41,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     private lateinit var userViewModel: UserInfoViewModel
-    private lateinit var data: UserInfo
+    private lateinit var data: UserFullInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,16 +60,17 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun setData() {
-        Picasso.get().load(data.avatar).into(avatar)
-        if (!data.name.isNullOrEmpty())
+        if (data.avatar.isNotEmpty())
+            Picasso.get().load(data.avatar).into(avatar)
+        if (data.name.isNotEmpty())
             name.text = data.name
-        if (!data.company.isNullOrEmpty())
+        if (data.company.isNotEmpty())
             company.text = data.company
-        if (!data.email.isNullOrEmpty())
+        if (data.email.isNotEmpty())
             email.text = data.email
-        if (!data.blog.isNullOrEmpty())
+        if (data.blog.isNotEmpty())
             blog.text = data.blog
-        if (!data.location.isNullOrEmpty())
+        if (data.location.isNotEmpty())
             location.text = data.location
         bio.text = data.bio
     }
@@ -91,9 +90,16 @@ class UserActivity : AppCompatActivity() {
     private fun createViewModel() {
         userViewModel = ViewModelProvider(this)[UserInfoViewModel::class.java]
 
-        userViewModel.getUserListLiveData(data.login!!).observe(this) {
-            val userAdapter = UserAdapter(it, null, baseContext)
-            recycler_view.adapter = userAdapter
+        userViewModel.getStateLiveData(data.login).observe(this) {
+            when(it.action) {
+                Action.INIT -> {
+                    val userAdapter = UserAdapter(userViewModel.getUserList(), null, baseContext)
+                    recycler_view.adapter = userAdapter
+                }
+                Action.POSITION_CHANGED -> {
+                    recycler_view.adapter?.notifyItemChanged(it.changedPosition)
+                }
+            }
         }
 
         userViewModel.getExceptionLiveData().observe(this) {
@@ -125,9 +131,9 @@ class UserActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDataFromIntent(): UserInfo? {
+    private fun getDataFromIntent(): UserFullInfo? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(KEY, UserInfo::class.java)
+            intent.getParcelableExtra(KEY, UserFullInfo::class.java)
         } else {
             intent.getParcelableExtra(KEY)
         }

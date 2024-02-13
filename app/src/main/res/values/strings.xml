@@ -6,4 +6,5 @@
     <string name="followers_temp">%s Подписчиков</string>
     <string name="repos_temp">%s Репозиториев</string>
     <string name="no_info">No info</string>
+    <string name="loading">Загрузка</string>
 </resources>

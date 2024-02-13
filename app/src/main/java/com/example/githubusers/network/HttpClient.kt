@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object HttpClient {
 
-    lateinit var retrofit: Retrofit
+    private lateinit var retrofit: Retrofit
 
     private const val BASE_URL = "https://api.github.com/"
 

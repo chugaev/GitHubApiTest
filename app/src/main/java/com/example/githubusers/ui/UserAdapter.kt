@@ -9,12 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.githubusers.R
-import com.example.githubusers.data.UserInfo
+import com.example.githubusers.data.UserFullInfo
 import com.squareup.picasso.Picasso
 import kotlin.Int
 
-
-internal class UserAdapter(private val userList: List<UserInfo?>,
+internal class UserAdapter(private val userList: ArrayList<UserFullInfo>,
                            private val clickListener: RecyclerViewClickListener?,
                            private val context: Context) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
@@ -26,11 +25,23 @@ internal class UserAdapter(private val userList: List<UserInfo?>,
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val user = userList[position]!!
-        Picasso.get().load(user.avatar).into(holder.imageView)
+        val user = userList[position]
+        if (user.avatar.isEmpty()) {
+            Picasso.get().cancelRequest(holder.imageView)
+            holder.imageView.setImageDrawable(null)
+        } else {
+            Picasso.get().load(user.avatar).into(holder.imageView)
+        }
         holder.textViewLogin.text = user.login
-        holder.textViewFollowers.text = context.getString(R.string.followers_temp, user.followersNumber.toString())
-        holder.textViewRepos.text = context.getString(R.string.repos_temp, user.reposNumber.toString())
+        if (user.loading) {
+            holder.textViewFollowers.text = context.getString(R.string.loading)
+            holder.textViewRepos.text = ""
+        } else {
+            holder.textViewFollowers.text =
+                context.getString(R.string.followers_temp, user.followersNumber.toString())
+            holder.textViewRepos.text =
+                context.getString(R.string.repos_temp, user.reposNumber.toString())
+        }
     }
 
     override fun getItemCount(): Int {
@@ -53,7 +64,7 @@ internal class UserAdapter(private val userList: List<UserInfo?>,
         }
 
         override fun onClick(view: View?) {
-            userList[bindingAdapterPosition]?.let {
+            userList[bindingAdapterPosition].let {
                 if (this@UserAdapter.clickListener != null)
                     this@UserAdapter.clickListener.onItemClick(it)
             }
